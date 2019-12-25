@@ -1,0 +1,7 @@
+{
+  "name": "operative-node",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Josh Justice <josh.justice@accesscfa.com>",
+  "license": "MIT"
+}
