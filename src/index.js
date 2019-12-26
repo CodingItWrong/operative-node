@@ -1,6 +1,8 @@
 const express = require('express');
 const WebSocket = require('ws');
 
+const setJsonHeader = res => res.header('Content-Type', 'application/json');
+
 const OperativeFactory = {
   create: ({ repo }) => {
     if (!repo) throw new Error('repo must be provided');
@@ -10,14 +12,26 @@ const OperativeFactory = {
     const getDatabaseRoute = (req, res) => {
       repo
         .findAllRecords()
-        .then(records => res.send(records))
-        .catch(err => res.send(err));
+        .then(records => {
+          setJsonHeader(res);
+          res.send(records);
+        })
+        .catch(err => {
+          setJsonHeader(res);
+          res.send(err);
+        });
     };
 
     const getOperationsRoute = (req, res) => {
       getOperationsSince(req.query.since)
-        .then(operations => res.send(operations))
-        .catch(err => res.send(err));
+        .then(operations => {
+          setJsonHeader(res);
+          res.send(operations);
+        })
+        .catch(err => {
+          setJsonHeader(res);
+          res.send(err);
+        });
     };
 
     const handleOperations = async operations => {
@@ -51,6 +65,7 @@ const OperativeFactory = {
 
       handleOperations(operations);
 
+      setJsonHeader(res);
       res.send(otherOperations);
     };
 
